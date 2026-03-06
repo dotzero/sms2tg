@@ -18,7 +18,7 @@ async def send_sms_message(sender: str, time: datetime, text: str):
     text_block = (
         "SMS от `"
         + escape_markdown(sender, version=2)
-        + timezone_time.strftime("` %d числа в %H:%M:\n\n")
+        + timezone_time.strftime("` (*%d %B в %H:%M*):\n\n")
     )
     lines = escape_markdown(text, version=2).split("\n")
     text_block = text_block + "\n".join("> " + line for line in lines)
