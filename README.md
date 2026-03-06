@@ -1,36 +1,36 @@
-# SIM868 Raspberry Pi 5 SMS Forwarder
+# SMS to Telegram forwarder for Raspberry Pi with SIM868
 
-Dockerised Python script for Raspberry PI (including 5) to send sms from SIM868 to Telegram
+## Preparation
+
+1. Firstly you need to find out the SMSC of your sim/region. To do this:
+   - Insert your SIM into your Android device
+   - Dial the `*#*#4636#*#*` (to get to the system menu).
+   - Select "Phone information".
+   - Scroll down to the "SMSC" item
+   - If the SMSC number is not there, press "Refresh"
+2. Insert the SIM card into the module
+3. Install SIM868 in Raspberry Pi GPIO 40-pin port
+4. Set the jumper to `B` as below
+
+    ![](docs/jumper_set.png)
+
+5. Enable serial on Raspberry Pi: Type `sudo raspi-config` in console -> Interfaces Options -> Serial Port -> Yes
+
+|----------------------------|----------------------------|----------------------------|
+| ![](docs/raspi_conf_1.png) | ![](docs/raspi_conf_2.png) | ![](docs/raspi_conf_3.png) |
+|----------------------------|----------------------------|----------------------------|
 
 ## Installation
 
-1) Firstly you need to find out the SMSC of your sim/region. To do this:
-   1. Insert your SIM into your Android device
-   2. Dial the `*#*#4636#*#*` (to get to the system menu).
-   3. Select "Phone information".
-   4. Scroll down to the "SMSC" item
-   5. If the SMSC number is not there, press "Refresh"
-   
-   ![](docs/smsc.png)
-2) Insert the SIM card into the module
-3) Install SIM868 in Raspberry Pi GPIO 40-pin port
-4) Set the jumper to B as below
+1. Install docker (Instruction [here](https://docs.docker.com/engine/install/debian/#install-using-the-repository))
+2. Clone this project in any folder and go to it
 
-![](docs/jumper_set.png)
+    ```bash
+    git clone https://github.com/dotzero/sms2tg.git
+    cd sms2tg
+    ```
 
-5) Enable serial on Raspberry Pi: Type `sudo raspi-config` in console -> Interfaces Options -> Serial Port -> No -> Yes
-
-| ![](docs/raspi_conf_1.png) | ![](docs/raspi_conf_2.png) | ![](docs/raspi_conf_3.png) |
-|----------------------------|----------------------------|----------------------------|
-| ![](docs/raspi_conf_4.png) | ![](docs/raspi_conf_5.png) |                            |
-
-6) Install docker (Instruction [here](https://docs.docker.com/engine/install/debian/#install-using-the-repository))
-7) Clone this project in any folder and go to it
-```bash
-git clone https://github.com/LionZXY/SMS2Telegram
-cd SMS2Telegram
-```
-8) Create `.env` file with this fields:
+3. Create `.env` file with this fields:
 
 | Field           | Description                                                                                                                                  | Example                                   |
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
@@ -41,6 +41,7 @@ cd SMS2Telegram
 | REPORT_TIMEZONE | Timezone to which message arrival time will be converted                                                                                     | "Europe/London"                           |
 
 Example `.env` file is:
+
 ```
 TG_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 TG_CHAT_ID=1235433892
@@ -48,8 +49,8 @@ SERIAL_PORT=/dev/ttyAMA0
 SMSC=+99599599999
 REPORT_TIMEZONE="Europe/London"
 ```
-9) Execute `docker compose up -d`. Warning: Important to build Docker image specifically on Raspberry Pi
 
+4. Execute `docker compose up -d`
 
 ## Spreadsheet
 

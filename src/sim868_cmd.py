@@ -40,11 +40,11 @@ async def setup_module():
     status_text = "неизвестен"
     match antenna_info["status"]:
         case 0:
-            status_text = "подключена нормально"
+            status_text = "подключена"
         case 1:
             status_text = "подключена к GND"
         case 2:
-            status_text = "подключена к другому источнику энергии"
+            status_text = "подключена к источнику энергии"
         case 3:
             status_text = "не подключена"
 
@@ -63,17 +63,17 @@ async def setup_module():
 
     signal_info = parse("+CSQ: {strength:d},{}\r\n", response)
     strength = signal_info["strength"]
-    strength_text = "неизвестен"
+    strength_text = "неизвестено"
     if strength < 2:
-        strength_text = "плохой"
+        strength_text = "плохое"
     elif strength < 10:
-        strength_text = "слабый"
+        strength_text = "слабое"
     elif strength < 15:
-        strength_text = "нормальный"
+        strength_text = "нормальное"
     elif strength < 20:
-        strength_text = "хороший"
+        strength_text = "хорошее"
     else:
-        strength_text = "отличный"
+        strength_text = "отличное"
 
     await send_message("📶 Качество сигнала: " + strength_text)
 
