@@ -1,11 +1,12 @@
 services:
-  sms2tg:
+  smsbox:
     build: .
     privileged: true
     restart: always
     devices:
-    - /dev/ttyS0
-    tty: true
+      - /dev/ttyS0
+    volumes:
+      - .:/app
     logging:
       driver: json-file
       options:
