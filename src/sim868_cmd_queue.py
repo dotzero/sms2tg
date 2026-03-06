@@ -1,5 +1,5 @@
 import threading
-from queue import Queue, Empty
+from queue import Empty, Queue
 
 import serial
 from termcolor import colored
@@ -9,14 +9,15 @@ from src.conf import SERIAL_PORT
 to_request_queue = Queue()
 received_response_queue = Queue()
 antenna_signal_queue = Queue()
-
 request_check_message_event = threading.Event()
 
 
 def __read_all_income_text(ser: serial.Serial):
     line = ser.readline()
+
     while len(line) != 0:
-        print("Answer from SIM868:", colored(line, color="green"))
+        print("SIM868 answer:", colored(line, color="green"))
+
         line_decoded = line.decode()
         if line_decoded.startswith("+CMTI"):
             request_check_message_event.set()
@@ -26,13 +27,14 @@ def __read_all_income_text(ser: serial.Serial):
             print("Skip empty line")
         else:
             received_response_queue.put(line_decoded)
+
         line = ser.readline()
 
 
 def __send_one_request(ser: serial.Serial):
     try:
         to_request = to_request_queue.get(block=False)
-        print("Request to SIM868:", colored(to_request, color="cyan"))
+        print("SIM868 request:", colored(to_request, color="cyan"))
         ser.write((to_request + "\n").encode())
     except Empty:
         pass

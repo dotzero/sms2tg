@@ -1,9 +1,7 @@
-import asyncio
-
-import gpiod
-from gpiozero import LED
 import time
+
 import serial
+from gpiozero import LED
 from termcolor import colored
 
 from src.conf import SERIAL_PORT
@@ -45,10 +43,9 @@ def __check_gsm_module() -> bool:
 
 def power_on_sim868():
     print("Try power on/off SIM868")
-    led = LED(pin=4)  # GPIO4, PIN 7 (https://gpiozero.readthedocs.io/en/latest/recipes.html#pin-numbering)
-    print(led)
+    # GPIO4, PIN 7 (https://gpiozero.readthedocs.io/en/latest/recipes.html#pin-numbering)
+    led = LED(pin=4)
     led.off()
-    print("Sleep 4 seconds")
     time.sleep(4)
     led.on()
     print("Finish waiting")
@@ -57,8 +54,8 @@ def power_on_sim868():
 async def check_and_enable_gsm_module():
     is_loaded = __check_gsm_module()
     while not is_loaded:
-        await send_message("SIM868 не загружен, пытаюсь включить...")
+        await send_message("📵 SIM868 не загружен, пытаюсь включить...")
         power_on_sim868()
         time.sleep(30)
         is_loaded = __check_gsm_module()
-    await send_message("SIM868 загружен, пинг прошел успешно")
+    await send_message("📱 SIM868 загружен, пинг прошел")

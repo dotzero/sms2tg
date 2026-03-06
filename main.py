@@ -8,16 +8,18 @@ from src.telegram_bot import send_message
 
 
 async def main():
-    await send_message("Бот запущен")
+    await send_message("🚀 Бот запущен...")
     await check_and_enable_gsm_module()
-    receive_thread = Thread(target=receive_cmd_loop, args=[])
-    receive_thread.start()
+
+    Thread(target=receive_cmd_loop, args=[]).start()
+
     try:
         await setup_module()
         await check_unread_message()
     except Exception as error:
-        await send_message("Failed setup module because " + str(error))
+        await send_message("🛑 Ошибка: " + str(error))
         raise error
+
     while True:
         print("Waiting for messages...")
         request_check_message_event.wait(timeout=10)
@@ -25,6 +27,5 @@ async def main():
         request_check_message_event.clear()
 
 
-if __name__ == '__main__':
-    print("Start")
+if __name__ == "__main__":
     asyncio.run(main())
