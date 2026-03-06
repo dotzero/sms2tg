@@ -16,7 +16,6 @@
 
 5. Enable serial on Raspberry Pi: Type `sudo raspi-config` in console -> Interfaces Options -> Serial Port -> Yes
 
-|----------------------------|----------------------------|----------------------------|
 | ![](docs/raspi_conf_1.png) | ![](docs/raspi_conf_2.png) | ![](docs/raspi_conf_3.png) |
 |----------------------------|----------------------------|----------------------------|
 
@@ -36,7 +35,7 @@
 |-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
 | TG_TOKEN        | Telegram token for the bot, created in BotFather (read more [here](https://core.telegram.org/bots/features#botfather))                       | 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11 |
 | TG_CHAT_ID      | ID of the chat room where messages will be sent. I get this parameter by open `https://api.telegram.org/bot%TG_TOKEN%/getUpdates` in browser | 1235433892                                |
-| SERIAL_PORT     | The port through which the Raspberry PI and SIM868 communicate. For Raspberry Pi 4 it can be `/dev/ttyS0`. You can check this with minicom   | /dev/ttyAMA0                              |
+| SERIAL_PORT     | The port through which the Raspberry PI and SIM868 communicate. You can check this with minicom                                              | /dev/ttyS0                                |
 | SMSC            | SMSC address, this may be unique for each operator/country                                                                                   | +99599599999                              |
 | REPORT_TIMEZONE | Timezone to which message arrival time will be converted                                                                                     | "Europe/London"                           |
 
@@ -45,7 +44,7 @@ Example `.env` file is:
 ```
 TG_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 TG_CHAT_ID=1235433892
-SERIAL_PORT=/dev/ttyAMA0
+SERIAL_PORT=/dev/ttyS0
 SMSC=+99599599999
 REPORT_TIMEZONE="Europe/London"
 ```
