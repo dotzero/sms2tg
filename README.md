@@ -12,7 +12,7 @@
 3. Install SIM868 in Raspberry Pi GPIO 40-pin port
 4. Set the jumper to `B` as below
 
-    ![](docs/jumper_set.png)
+    ![](docs/board.jpg)
 
 5. Enable serial on Raspberry Pi: Type `sudo raspi-config` in console -> Interfaces Options -> Serial Port -> Yes
 
