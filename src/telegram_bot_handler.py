@@ -6,6 +6,7 @@ from src.sim868_cmd import setup_module
 
 
 async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    print(update.effective_chat.id)
     if update.effective_chat.id != TG_CHAT_ID:
         await update.message.reply_text("🛑 Доступ запрещен")
         return

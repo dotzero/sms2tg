@@ -26,7 +26,7 @@ async def main():
     try:
         while True:
             print("Waiting for messages...")
-            request_check_message_event.wait(timeout=10)
+            await asyncio.to_thread(request_check_message_event.wait, 10)
             await check_unread_message()
             request_check_message_event.clear()
     finally:

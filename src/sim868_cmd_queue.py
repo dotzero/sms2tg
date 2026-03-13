@@ -24,7 +24,7 @@ def __read_all_income_text(ser: serial.Serial):
         elif line_decoded.startswith("+CANT"):
             antenna_signal_queue.put(line_decoded)
         elif line_decoded == "\r\n":
-            print("Skip empty line")
+            pass
         else:
             received_response_queue.put(line_decoded)
 
