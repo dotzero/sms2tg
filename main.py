@@ -5,6 +5,7 @@ from src.sim868_cmd import check_unread_message, setup_module
 from src.sim868_cmd_queue import receive_cmd_loop, request_check_message_event
 from src.sim868_pwrkey import check_and_enable_gsm_module
 from src.telegram_bot import send_message
+from src.telegram_bot_handler import start_bot_polling
 
 
 async def main():
@@ -20,11 +21,20 @@ async def main():
         await send_message("🛑 Ошибка: " + str(error))
         raise error
 
-    while True:
-        print("Waiting for messages...")
-        request_check_message_event.wait(timeout=10)
-        await check_unread_message()
-        request_check_message_event.clear()
+    bot_task = asyncio.create_task(start_bot_polling())
+
+    try:
+        while True:
+            print("Waiting for messages...")
+            request_check_message_event.wait(timeout=10)
+            await check_unread_message()
+            request_check_message_event.clear()
+    finally:
+        bot_task.cancel()
+        try:
+            await bot_task
+        except asyncio.CancelledError:
+            pass
 
 
 if __name__ == "__main__":
