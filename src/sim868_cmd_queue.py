@@ -1,4 +1,5 @@
 import threading
+import time
 from queue import Empty, Queue
 
 import serial
@@ -13,7 +14,11 @@ request_check_message_event = threading.Event()
 
 
 def __read_all_income_text(ser: serial.Serial):
-    line = ser.readline()
+    try:
+        line = ser.readline()
+    except serial.SerialException as exc:
+        # Let the caller handle reconnect
+        raise exc
 
     while len(line) != 0:
         print("SIM868 answer:", colored(line, color="green"))
@@ -28,7 +33,11 @@ def __read_all_income_text(ser: serial.Serial):
         else:
             received_response_queue.put(line_decoded)
 
-        line = ser.readline()
+        try:
+            line = ser.readline()
+        except serial.SerialException as exc:
+            # Let the caller handle reconnect
+            raise exc
 
 
 def __send_one_request(ser: serial.Serial):
@@ -41,7 +50,21 @@ def __send_one_request(ser: serial.Serial):
 
 
 def receive_cmd_loop():
-    ser = serial.Serial(SERIAL_PORT, timeout=1, write_timeout=1)
+    ser = None
     while True:
-        __read_all_income_text(ser)
-        __send_one_request(ser)
+        try:
+            if ser is None or not ser.is_open:
+                ser = serial.Serial(SERIAL_PORT, timeout=1, write_timeout=1)
+                print("SIM868 serial connected:", SERIAL_PORT)
+
+            __read_all_income_text(ser)
+            __send_one_request(ser)
+        except serial.SerialException as exc:
+            print("SIM868 serial error:", exc)
+            try:
+                if ser is not None:
+                    ser.close()
+            finally:
+                ser = None
+            # brief backoff before reconnecting
+            time.sleep(1)
