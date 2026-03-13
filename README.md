@@ -51,6 +51,11 @@ REPORT_TIMEZONE="Europe/London"
 
 4. Execute `docker compose up -d`
 
+## Telegram Bot Commands
+
+- `/ping` - checks that the bot is alive and replies with `pong`
+- `/setup` - runs SIM868 setup procedure
+
 ## Spreadsheet
 
 - Enable PDU Mode: `AT+CMGF=0`
