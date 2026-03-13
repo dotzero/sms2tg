@@ -3,6 +3,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 
 from src.conf import TG_CHAT_ID, TG_TOKEN
 from src.sim868_cmd import setup_module
+from src.sim868_pwrkey import check_and_enable_gsm_module
 
 
 async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -19,6 +20,7 @@ async def setup_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     try:
+        await check_and_enable_gsm_module()
         await setup_module()
     except Exception as e:
         await update.message.reply_text(f"🛑 Ошибка: {str(e)}")

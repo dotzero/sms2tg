@@ -4,8 +4,11 @@ from parse import parse
 from smspdudecoder.easy import read_incoming_sms
 
 from src.conf import SMSC
-from src.sim868_cmd_queue import (antenna_signal_queue,
-                                  received_response_queue, to_request_queue)
+from src.sim868_cmd_queue import (
+    antenna_signal_queue,
+    received_response_queue,
+    to_request_queue,
+)
 from src.telegram_bot import send_message, send_sms_message
 
 
